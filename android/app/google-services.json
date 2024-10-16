@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "498792436096",
+    "project_id": "debtsclients",
+    "storage_bucket": "debtsclients.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:498792436096:android:3a7c8b2b7b947cdee53165",
+        "android_client_info": {
+          "package_name": "com.mezo.clients_debts"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDwPray9fvunZsrpEp6yfJBEShpGPNf7YY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
