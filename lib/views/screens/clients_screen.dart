@@ -1,5 +1,7 @@
 // ignore_for_file: avoid_types_as_parameter_names, non_constant_identifier_names, prefer_const_constructors
 
+import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:clients_debts/views/screens/edit_clients.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +14,8 @@ import '../widget/components.dart';
 
 import 'add_clients.dart';
 
+import 'add_invoice.dart';
+import 'client_transaction.dart';
 import 'loginscreen.dart';
 
 class ClientsScreen extends StatelessWidget {
@@ -100,51 +104,215 @@ class ClientsScreen extends StatelessWidget {
                                     itemCount: snapshot.data!.docs.length,
                                     separatorBuilder: (context, index) =>
                                         const Divider(),
-                                    itemBuilder: (context, index) => Card(
-                                      color: Colors.deepPurple,
-                                      elevation: 5,
-                                      child: ListTile(
-                                        title: Text(
-                                          snapshot.data?.docs[index]['name'],
-                                          style: const TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        subtitle: RichText(
-                                            text: TextSpan(children: [
-                                          TextSpan(
-                                              text:
-                                                  "${snapshot.data?.docs[index]['company']} -",
-                                              style: const TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.bold)),
-                                          TextSpan(
-                                              text:
-                                                  "${snapshot.data?.docs[index]['guid']} -",
-                                              style: const TextStyle(
-                                                  color: Colors.red,
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.bold)),
-                                          TextSpan(
-                                              text: snapshot.data?.docs[index]
-                                                  ['phone'],
-                                              style: const TextStyle(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold)),
-                                        ])),
-                                        trailing: Text(
-                                          snapshot.data!
-                                              .docs[index]['currentAmount']
-                                              .toString(),
-                                          style: TextStyle(
-                                              color: snapshot.data?.docs[index]
-                                                          ['currentAmount'] >
-                                                      0
-                                                  ? Colors.green
-                                                  : Colors.red,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 18),
+                                    itemBuilder: (context, index) => SizedBox(
+                                      width: Get.width * 0.9,
+                                      height: Get.height * 0.12,
+                                      child: Card(
+                                        elevation: 5,
+                                        color: Colors.deepPurple,
+                                        child: ListTile(
+                                          leading: PopupMenuButton(
+                                              icon: const Icon(Icons.more_vert,
+                                                  color: Colors.white),
+                                              itemBuilder: (context) => [
+                                                    const PopupMenuItem(
+                                                      value: 1,
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          Text(
+                                                            "تعديل",
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .black,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
+                                                          ),
+                                                          Icon(
+                                                            Icons.edit,
+                                                            color: Colors
+                                                                .deepPurple,
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    const PopupMenuItem(
+                                                      value: 2,
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          Text("حذف",
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold)),
+                                                          Icon(
+                                                            Icons
+                                                                .delete_outline,
+                                                            color: Colors.red,
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    const PopupMenuItem(
+                                                      value: 3,
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          Text(
+                                                              "اضافة فاتورة بيع او رصيد علاج",
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold)),
+                                                          Icon(
+                                                            Icons.add,
+                                                            color: Colors.green,
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    const PopupMenuItem(
+                                                      value: 4,
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          Text(
+                                                              "عرض حركات العميل",
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold)),
+                                                          Icon(
+                                                            Icons
+                                                                .list_alt_outlined,
+                                                            color:
+                                                                Colors.orange,
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
+                                              onSelected: (value) {
+                                                if (value == 1) {
+                                                  Get.to(() => EditClients(
+                                                      id: snapshot
+                                                          .data!.docs[index].id,
+                                                      name: snapshot.data!
+                                                          .docs[index]['name'],
+                                                      company: snapshot
+                                                              .data!.docs[index]
+                                                          ['company'],
+                                                      phone: snapshot.data!
+                                                          .docs[index]['phone'],
+                                                      amount: snapshot.data!.docs[index]
+                                                          ['currentAmount'],
+                                                      goverment: snapshot
+                                                              .data!.docs[index]
+                                                          ['goverment']));
+                                                } else if (value == 2) {
+                                                  AwesomeDialog(
+                                                    context: context,
+                                                    dialogType:
+                                                        DialogType.warning,
+                                                    animType:
+                                                        AnimType.bottomSlide,
+                                                    title: 'تنبيه',
+                                                    desc:
+                                                        'هل تريد حذف هذا العميل؟',
+                                                    btnCancelOnPress: () {
+                                                      Get.back();
+                                                    },
+                                                    btnOkOnPress: () {
+                                                      controller.deleteClients(
+                                                          snapshot.data!
+                                                              .docs[index].id,
+                                                          snap.data!.docs[0]
+                                                              ['uid']);
+                                                    },
+                                                    buttonsTextStyle:
+                                                        const TextStyle(
+                                                            color:
+                                                                Colors.white),
+                                                    showCloseIcon: true,
+                                                  ).show();
+                                                } else if (value == 3) {
+                                                  Get.dialog(AddInvoice(
+                                                      id: snapshot
+                                                          .data!.docs[index].id,
+                                                      name: snapshot
+                                                              .data!.docs[index]
+                                                          ['name']));
+                                                }
+
+                                                if (value == 4) {
+                                                  Get.to(() =>
+                                                      ClientTransactions(
+                                                          id: snapshot.data!
+                                                              .docs[index].id));
+                                                }
+                                              }),
+                                          title: Text(
+                                            snapshot.data?.docs[index]['name'],
+                                            style: const TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          subtitle: RichText(
+                                              text: TextSpan(children: [
+                                            TextSpan(
+                                                text:
+                                                    "${snapshot.data?.docs[index]['company']} -",
+                                                style: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 15,
+                                                    fontWeight:
+                                                        FontWeight.bold)),
+                                            TextSpan(
+                                                text:
+                                                    "${snapshot.data?.docs[index]['guid']} -",
+                                                style: const TextStyle(
+                                                    color: Colors.red,
+                                                    fontSize: 15,
+                                                    fontWeight:
+                                                        FontWeight.bold)),
+                                            TextSpan(
+                                                text: snapshot.data?.docs[index]
+                                                    ['phone'],
+                                                style: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight:
+                                                        FontWeight.bold)),
+                                          ])),
+                                          trailing: Text(
+                                            snapshot.data!
+                                                .docs[index]['currentAmount']
+                                                .toString(),
+                                            style: TextStyle(
+                                                color: snapshot.data
+                                                                ?.docs[index]
+                                                            ['currentAmount'] >
+                                                        0
+                                                    ? Colors.green
+                                                    : Colors.red,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 18),
+                                          ),
                                         ),
                                       ),
                                     ),
