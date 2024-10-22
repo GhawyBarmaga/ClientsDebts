@@ -3,8 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-
-
 import '../../controller/clients_controller.dart';
 import '../widget/components.dart';
 
@@ -62,7 +60,7 @@ class _AddInvoiceState extends State<AddInvoice> {
     } else {
       batch.set(invoices.doc(), {
         "name": name.text,
-        "type": "رصيد علاج",
+        "type": "فاتورة شراء ",
         "cureAmount": double.parse(cureAmount.text),
         "date": formattedDate,
         "uid": FirebaseAuth.instance.currentUser?.uid,
@@ -108,7 +106,7 @@ class _AddInvoiceState extends State<AddInvoice> {
         actions: [
           const Center(
             child: Text(
-              " اضافة فاتورة بيع او رصيد علاج  ",
+              " اضافة فاتورة بيع او  فاتورة شراء",
               style: TextStyle(
                   color: Colors.deepPurple,
                   fontWeight: FontWeight.bold,
@@ -124,7 +122,7 @@ class _AddInvoiceState extends State<AddInvoice> {
             height: 20,
           ),
           CustomForm(
-              text: "قيمة العلاج",
+              text: "قيمة الفاتوره",
               type: TextInputType.number,
               name: cureAmount),
           const SizedBox(
@@ -142,8 +140,8 @@ class _AddInvoiceState extends State<AddInvoice> {
             },
           ),
           RadioListTile<String>(
-            title: const Text('رصيد علاج شهرى او يومى'),
-            value: 'رصيد علاج شهرى او يومى',
+            title: const Text('فاتورة شراء '),
+            value: 'فاتورة شراء ',
             groupValue: selectedOption,
             onChanged: (String? value) {
               setState(() {

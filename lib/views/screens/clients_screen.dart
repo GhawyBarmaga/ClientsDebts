@@ -169,7 +169,7 @@ class ClientsScreen extends StatelessWidget {
                                                                 .spaceBetween,
                                                         children: [
                                                           Text(
-                                                              "اضافة فاتورة بيع او رصيد علاج",
+                                                              "اضافة فاتورة بيع او  فاتورة شراء",
                                                               style: TextStyle(
                                                                   color: Colors
                                                                       .black,
