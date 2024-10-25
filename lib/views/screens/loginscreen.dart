@@ -10,6 +10,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 import '../widget/components.dart';
+import '../widget/forgot_pass.dart';
 import 'register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -25,6 +26,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool issecure = true;
   bool isloading = false;
   TextEditingController email = TextEditingController();
+  GlobalKey<FormState> fkey = GlobalKey<FormState>();
   //final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -101,107 +103,129 @@ class _LoginScreenState extends State<LoginScreen> {
           body: SizedBox(
         width: Get.width,
         child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Image.asset("assets/login.png"),
-              const SizedBox(
-                height: 20.0,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: CustomForm(
-                  text: "ادخل ايميلك",
-                  type: TextInputType.emailAddress,
-                  name: email,
-                  sufxicon: const Icon(Icons.email),
+          child: Form(
+            key: fkey,
+            child: Column(
+              children: [
+                Image.asset("assets/login.png"),
+                const SizedBox(
+                  height: 20.0,
                 ),
-              ),
-              const SizedBox(
-                height: 12.0,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: CustomPass(
-                    text: "ادخل كلمة المرور",
-                    type: TextInputType.visiblePassword,
-                    issecure: issecure,
-                    name: password,
-                    sufxicon: InkWell(
-                      onTap: () {
-                        issecure = !issecure;
-                        setState(() {});
-                      },
-                      child: Icon(
-                          issecure ? Icons.visibility_off : Icons.visibility),
-                    )),
-              ),
-              Row(
-                children: [
-                  Checkbox(
-                      activeColor: HexColor("8a2be2"),
-                      checkColor: Colors.white,
-                      side: const BorderSide(color: Colors.black),
-                      value: ischecked,
-                      onChanged: (value) {
-                        ischecked = !ischecked;
-                        setState(() {});
-                      }),
-                  const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text(
-                      "تذكرني",
-                      style: TextStyle(
-                          color: Colors.deepPurple,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10.0),
-              SizedBox(
-                width: Get.width * 0.8,
-                child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.black,
-                    ),
-                    onPressed: () {
-                      loginUser(email: email.text, password: password.text);
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: CustomForm(
+                    text: "Your Email",
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Please Enter Your Email";
+                      }
+                      return null;
                     },
-                    child: isloading
-                        ? const Center(
-                            child: CircularProgressIndicator(
-                            backgroundColor: Colors.white,
-                          ))
-                        : const Center(
-                            child: Text(
-                            "تسجيل الدخول",
-                            style: TextStyle(
-                                fontSize: 25,
-                                fontWeight: FontWeight.w700,
-                                color: Colors.white),
-                          ))),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.only(left: 8.0),
-                    child: Center(
-                        child: Text(
-                      "ليس لديك حساب؟",
-                      style: TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.bold),
-                    )),
+                    type: TextInputType.emailAddress,
+                    name: email,
+                    sufxicon: const Icon(Icons.email),
                   ),
-                  TextButton(
+                ),
+                const SizedBox(
+                  height: 12.0,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: CustomPass(
+                      validator: (p0) =>
+                          p0!.isEmpty ? "Enter Your Password" : null,
+                      text: "Your Password",
+                      type: TextInputType.visiblePassword,
+                      issecure: issecure,
+                      name: password,
+                      sufxicon: InkWell(
+                        onTap: () {
+                          issecure = !issecure;
+                          setState(() {});
+                        },
+                        child: Icon(
+                            issecure ? Icons.visibility_off : Icons.visibility),
+                      )),
+                ),
+                Row(
+                  children: [
+                    TextButton(
+                        onPressed: () {
+                          Get.to(() => const ForgotPasswordScreen());
+                        },
+                        child: const Text(
+                          " Forgot Password ?",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        )),
+                    const Spacer(),
+                    Checkbox(
+                        activeColor: HexColor("8a2be2"),
+                        checkColor: Colors.white,
+                        side: const BorderSide(color: Colors.black),
+                        value: ischecked,
+                        onChanged: (value) {
+                          ischecked = !ischecked;
+                          setState(() {});
+                        }),
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text(
+                        "Remember Me",
+                        style: TextStyle(
+                            color: Colors.deepPurple,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10.0),
+                SizedBox(
+                  width: Get.width * 0.8,
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.black,
+                      ),
                       onPressed: () {
-                        Get.to(() => const RegisterScreen());
+                        if (fkey.currentState!.validate()) {
+                          loginUser(email: email.text, password: password.text);
+                        }
                       },
-                      child: const Text("تسجيل حساب جديد",
-                          style: TextStyle(fontWeight: FontWeight.bold)))
-                ],
-              ),
-            ],
+                      child: isloading
+                          ? const Center(
+                              child: CircularProgressIndicator(
+                              backgroundColor: Colors.white,
+                            ))
+                          : const Center(
+                              child: Text(
+                              " Login",
+                              style: TextStyle(
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.white),
+                            ))),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.only(left: 8.0),
+                      child: Center(
+                          child: Text(
+                        "Don't have an account?",
+                        style: TextStyle(
+                            color: Colors.black, fontWeight: FontWeight.bold),
+                      )),
+                    ),
+                    TextButton(
+                        onPressed: () {
+                          Get.to(() => const RegisterScreen());
+                        },
+                        child: const Text("  Register Now",
+                            style: TextStyle(fontWeight: FontWeight.bold)))
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       )),

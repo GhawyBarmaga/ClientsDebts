@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +24,7 @@ class _RegisterState extends State<RegisterScreen> {
   TextEditingController password = TextEditingController();
 
   TextEditingController username = TextEditingController();
+  GlobalKey<FormState> formkey = GlobalKey<FormState>();
   // final DateTime now = DateTime.now();
   // final DateFormat formatter = DateFormat('yyyy-MM-dd');
   @override
@@ -82,7 +82,7 @@ class _RegisterState extends State<RegisterScreen> {
           //==== add user to your  firestore database=================
 
           await FirebaseFirestore.instance
-              .collection("Pharmacists")
+              .collection("users")
               .doc(cred.user!.uid)
               .set({
             'name': name,
@@ -138,7 +138,7 @@ class _RegisterState extends State<RegisterScreen> {
               ])),
               //child: Lottie.asset("assets/animations/login.json.json"),
               child: const Text(
-                "👋مرحبا بك",
+                " Welcome",
                 style: TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.w700,
@@ -155,93 +155,109 @@ class _RegisterState extends State<RegisterScreen> {
                   borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(40),
                       topRight: Radius.circular(40))),
-              child: Column(children: [
-                const SizedBox(
-                  height: 30.0,
-                ),
-                CustomForm(
-                  text: "ادخل اسمك",
-                  type: TextInputType.name,
-                  name: username,
-                  sufxicon: const Icon(Icons.person),
-                ),
-                const SizedBox(
-                  height: 30.0,
-                ),
-                CustomForm(
-                  text: "ادخل ايميلك",
-                  type: TextInputType.emailAddress,
-                  name: emailaddress,
-                  sufxicon: const Icon(Icons.email),
-                ),
-                const SizedBox(
-                  height: 30.0,
-                ),
-                CustomPass(
-                    text: "ادخل كلمة المرور",
-                    type: TextInputType.visiblePassword,
-                    issecure: issecure,
-                    name: password,
-                    sufxicon: InkWell(
-                      onTap: () {
-                        issecure = !issecure;
-                        setState(() {});
-                      },
-                      child: Icon(
-                          issecure ? Icons.visibility_off : Icons.visibility),
-                    )),
-                const SizedBox(
-                  height: 30.0,
-                ),
-                GestureDetector(
-                    onTap: () {
-                      signupUser(
-                          email: emailaddress.text,
-                          password: password.text,
-                          name: username.text);
+              child: Form(
+                key: formkey,
+                child: Column(children: [
+                  const SizedBox(
+                    height: 30.0,
+                  ),
+                  CustomForm(
+                    validator: (validator) {
+                      if (validator!.isEmpty) {
+                        return "Enter Your Name";
+                      }
+                      return null;
                     },
-                    child: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 15.0),
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                            gradient: LinearGradient(colors: [
-                              HexColor("666666"),
-                              HexColor("333333"),
-                              HexColor("101010")
-                            ]),
-                            borderRadius: BorderRadius.circular(30)),
-                        child: Center(
-                            child: isloading
-                                ? const Center(
-                                    child: CircularProgressIndicator())
-                                : const Center(
-                                    child: Text(
-                                    "تسجيل الدخول",
-                                    style: TextStyle(
-                                        fontSize: 25,
-                                        fontWeight: FontWeight.w700,
-                                        color: Colors.white),
-                                  ))))),
-                const SizedBox(
-                  height: 30.0,
-                ),
-                Row(
-                  children: [
-                    const Center(
-                        child: Text(
-                      "لديك حساب بالفعل؟",
-                      style: TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.bold),
-                    )),
-                    TextButton(
-                        onPressed: () {
-                          Get.to(() => const LoginScreen());
+                    text: " Enter Your Name",
+                    type: TextInputType.name,
+                    name: username,
+                    sufxicon: const Icon(Icons.person),
+                  ),
+                  const SizedBox(
+                    height: 30.0,
+                  ),
+                  CustomForm(
+                    validator: (p0) => p0!.isEmpty ? "Enter Your Email" : null,
+                    text: "Enter Your Email",
+                    type: TextInputType.emailAddress,
+                    name: emailaddress,
+                    sufxicon: const Icon(Icons.email),
+                  ),
+                  const SizedBox(
+                    height: 30.0,
+                  ),
+                  CustomPass(
+                      validator: (p0) =>
+                          p0!.isEmpty ? "Enter Your Password" : null,
+                      text: "Enter Your Password",
+                      type: TextInputType.visiblePassword,
+                      issecure: issecure,
+                      name: password,
+                      sufxicon: InkWell(
+                        onTap: () {
+                          issecure = !issecure;
+                          setState(() {});
                         },
-                        child: const Text("تسجيل الدخول",
-                            style: TextStyle(fontWeight: FontWeight.bold)))
-                  ],
-                ),
-              ]),
+                        child: Icon(
+                            issecure ? Icons.visibility_off : Icons.visibility),
+                      )),
+                  const SizedBox(
+                    height: 30.0,
+                  ),
+                  GestureDetector(
+                      onTap: () {
+                        if (formkey.currentState!.validate()) {
+                          signupUser(
+                              email: emailaddress.text,
+                              password: password.text,
+                              name: username.text);
+                          formkey.currentState!.save();
+                        }
+                      },
+                      child: Container(
+                          padding: const EdgeInsets.symmetric(vertical: 15.0),
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                              gradient: LinearGradient(colors: [
+                                HexColor("666666"),
+                                HexColor("333333"),
+                                HexColor("101010")
+                              ]),
+                              borderRadius: BorderRadius.circular(30)),
+                          child: Center(
+                              child: isloading
+                                  ? const Center(
+                                      child: CircularProgressIndicator())
+                                  : const Center(
+                                      child: Text(
+                                      " Register",
+                                      style: TextStyle(
+                                          fontSize: 25,
+                                          fontWeight: FontWeight.w700,
+                                          color: Colors.white),
+                                    ))))),
+                  const SizedBox(
+                    height: 30.0,
+                  ),
+                  Row(
+                    children: [
+                      const Center(
+                          child: Text(
+                        "you have an account?",
+                        style: TextStyle(
+                            color: Colors.black, fontWeight: FontWeight.bold),
+                      )),
+                      TextButton(
+                          onPressed: () {
+                            Get.to(() => const LoginScreen());
+                          },
+                          child: const Text(" Login",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 18)))
+                    ],
+                  ),
+                ]),
+              ),
             )
           ]),
         ),

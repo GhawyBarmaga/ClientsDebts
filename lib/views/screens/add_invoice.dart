@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../controller/clients_controller.dart';
+
 import '../widget/components.dart';
 
 class AddInvoice extends StatefulWidget {
@@ -35,13 +35,13 @@ class _AddInvoiceState extends State<AddInvoice> {
     WriteBatch batch = firestore.batch();
 
     CollectionReference invoices = firestore
-        .collection("Pharmacists")
+        .collection("users")
         .doc(FirebaseAuth.instance.currentUser?.uid)
         .collection("clients")
         .doc(widget.id)
         .collection("invoices");
     DocumentReference updateclient = firestore
-        .collection("Pharmacists")
+        .collection("users")
         .doc(FirebaseAuth.instance.currentUser?.uid)
         .collection("clients")
         .doc(widget.id);
@@ -52,7 +52,7 @@ class _AddInvoiceState extends State<AddInvoice> {
         "cureAmount": double.parse(cureAmount.text),
         "date": formattedDate,
         "uid": FirebaseAuth.instance.currentUser?.uid,
-        "deviceid": Get.find<AddClientsController>().deviceid
+       
       });
       batch.update(updateclient, {
         "currentAmount": FieldValue.increment(-double.parse(cureAmount.text))
@@ -64,7 +64,7 @@ class _AddInvoiceState extends State<AddInvoice> {
         "cureAmount": double.parse(cureAmount.text),
         "date": formattedDate,
         "uid": FirebaseAuth.instance.currentUser?.uid,
-        "deviceid": Get.find<AddClientsController>().deviceid
+       
       });
       batch.update(updateclient, {
         "currentAmount": FieldValue.increment(double.parse(cureAmount.text))

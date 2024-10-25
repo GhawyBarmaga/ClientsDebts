@@ -124,7 +124,7 @@ class _AddClientsState extends State<AddClients> {
                       const SizedBox(height: 20.0),
                       StreamBuilder(
                         stream: FirebaseFirestore.instance
-                            .collection("Pharmacists")
+                            .collection("users")
                             .where("uid",
                                 isEqualTo:
                                     FirebaseAuth.instance.currentUser?.uid)

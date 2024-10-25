@@ -16,37 +16,7 @@ class ClientTransactions extends StatefulWidget {
 class _ClientTransactionsState extends State<ClientTransactions> {
   DateTime? firstDate;
   DateTime? secDate;
-  //TextEditingController name = TextEditingController();
-  //=========================================firstdate calender==============================
-  // Future pickFirstDate() async {
-  //   final initialDate = DateTime.now();
-  //   final newDate = await showDatePicker(
-  //     context: context,
-  //     initialDate: firstDate ?? initialDate,
-  //     firstDate: DateTime(DateTime.now().year - 20),
-  //     lastDate: DateTime.now(),
-  //   );
-  //   if (newDate == null) {
-  //     return;
-  //   }
-  //   setState(() => firstDate = newDate);
-  // }
-
-//===========================================second date calender==========================
-  // Future pickSecDate() async {
-  //   final initialDate = DateTime.now();
-  //   final newDate = await showDatePicker(
-  //     context: context,
-  //     initialDate: secDate ?? initialDate,
-  //     firstDate: DateTime(DateTime.now().year - 10),
-  //     lastDate: DateTime.now(),
-  //   );
-  //   if (newDate == null) {
-  //     return;
-  //   }
-  //   setState(() => secDate = newDate);
-  // }
-
+  
 //=================================================================
   @override
   void initState() {
@@ -157,7 +127,7 @@ class _ClientTransactionsState extends State<ClientTransactions> {
                   child: StreamBuilder<QuerySnapshot>(
                       stream: firstDate != null && secDate != null
                           ? FirebaseFirestore.instance
-                              .collection("Pharmacists")
+                              .collection("users")
                               .doc(FirebaseAuth.instance.currentUser!.uid)
                               .collection("clients")
                               .doc(widget.id)
@@ -174,7 +144,7 @@ class _ClientTransactionsState extends State<ClientTransactions> {
 
                               .snapshots()
                           : FirebaseFirestore.instance
-                              .collection("Pharmacists")
+                              .collection("users")
                               .doc(FirebaseAuth.instance.currentUser!.uid)
                               .collection("clients")
                               .doc(widget.id)

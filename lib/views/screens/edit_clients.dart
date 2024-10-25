@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../controller/clients_controller.dart';
+
 
 import '../widget/components.dart';
 
@@ -81,7 +81,7 @@ class _EditClientsState extends State<EditClients> {
     try {
       validateForm();
       await FirebaseFirestore.instance
-          .collection("Pharmacists")
+          .collection("users")
           .doc(FirebaseAuth.instance.currentUser!.uid)
           .collection("clients")
           .doc(widget.id)
@@ -91,7 +91,7 @@ class _EditClientsState extends State<EditClients> {
         "company": company.text,
         "goverment": governorate.text,
         "currentAmount": double.parse(amount.text),
-        "device": Get.find<AddClientsController>().deviceid
+      
       });
       Get.snackbar("Success", "تم التعديل بنجاح",
           backgroundColor: Colors.deepPurple, colorText: Colors.white);

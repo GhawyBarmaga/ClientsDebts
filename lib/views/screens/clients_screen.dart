@@ -49,7 +49,7 @@ class ClientsScreen extends StatelessWidget {
             width: Get.width,
             child: StreamBuilder<QuerySnapshot>(
                 stream: FirebaseFirestore.instance
-                    .collection("Pharmacists")
+                    .collection("users")
                     .where("uid",
                         isEqualTo: FirebaseAuth.instance.currentUser?.uid)
                     .snapshots(),
@@ -76,7 +76,7 @@ class ClientsScreen extends StatelessWidget {
                       Expanded(
                           child: StreamBuilder<QuerySnapshot>(
                               stream: FirebaseFirestore.instance
-                                  .collection("Pharmacists")
+                                  .collection("users")
                                   .doc(FirebaseAuth.instance.currentUser?.uid)
                                   .collection("clients")
                                   .orderBy("name")

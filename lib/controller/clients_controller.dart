@@ -3,7 +3,7 @@
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:device_info_plus/device_info_plus.dart';
+
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -22,16 +22,14 @@ class AddClientsController extends GetxController {
   TextEditingController searchcode = TextEditingController();
   final formKey = GlobalKey<FormState>();
   List<QueryDocumentSnapshot> data = [];
-  DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-  String deviceid = "";
+ 
 
   //List<QueryDocumentSnapshot> clientslist = [];
   bool isLoading = true;
 
   @override
   void onInit() async {
-    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-    deviceid = androidInfo.model;
+    
     getclients();
     clearController();
     selectedValue = "";
@@ -57,7 +55,7 @@ class AddClientsController extends GetxController {
     try {
       data.clear();
       QuerySnapshot q = await FirebaseFirestore.instance
-          .collection("Pharmacists")
+          .collection("users")
           .doc(currentuser)
           .collection("clients")
           .get();
@@ -74,7 +72,7 @@ class AddClientsController extends GetxController {
   void addCompanies(userid) async {
     try {
       await FirebaseFirestore.instance
-          .collection("Pharmacists")
+          .collection("users")
           .doc(userid)
           .collection("companies")
           .add({"compid": userid, "companyname": addcompany.text});
@@ -106,7 +104,7 @@ class AddClientsController extends GetxController {
       // final curency = NumberFormat.currency(locale: 'ar_EG', symbol: 'ج.م.');
       // final formattedCurrency = curency.format(number);
       await FirebaseFirestore.instance
-          .collection("Pharmacists")
+          .collection("users")
           .doc(userid)
           .collection("clients")
           .add({
@@ -117,7 +115,7 @@ class AddClientsController extends GetxController {
         "company": selectedValue,
         "clientid": userid,
         "guid": randomnumbers,
-        "device": deviceid
+        
       });
       clearController();
       selectedValue = "";
@@ -146,7 +144,7 @@ class AddClientsController extends GetxController {
   void deleteClients(docid, currentuser) async {
     try {
       final DocumentSnapshot document = await FirebaseFirestore.instance
-          .collection("Pharmacists")
+          .collection("users")
           .doc(currentuser)
           .collection("clients")
           .doc(docid)
@@ -164,7 +162,7 @@ class AddClientsController extends GetxController {
   //=====validate phone number is exist or not=================================
   getAllPhoneNumbers() async {
     final collection = FirebaseFirestore.instance
-        .collection("Pharmacists")
+        .collection("users")
         .doc(FirebaseAuth.instance.currentUser?.uid)
         .collection("clients");
 
