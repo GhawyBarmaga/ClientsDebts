@@ -141,11 +141,11 @@ class AddClientsController extends GetxController {
 
   //==============================delete clients==============================
 
-  void deleteClients(docid, currentuser) async {
+  void deleteClients(docid) async {
     try {
       final DocumentSnapshot document = await FirebaseFirestore.instance
           .collection("users")
-          .doc(currentuser)
+          .doc(FirebaseAuth.instance.currentUser!.uid)
           .collection("clients")
           .doc(docid)
           .get();
