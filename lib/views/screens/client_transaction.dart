@@ -48,7 +48,7 @@ class _ClientTransactionsState extends State<ClientTransactions> {
             child: Column(
               children: [
                 const Text(
-                  "حركات العملاء",
+                  "حركات العميل",
                   style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
