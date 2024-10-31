@@ -1,6 +1,5 @@
 // ignore_for_file: avoid_types_as_parameter_names, non_constant_identifier_names, prefer_const_constructors
 
-
 import 'package:clients_debts/views/screens/edit_clients.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -13,7 +12,6 @@ import '../../controller/clients_controller.dart';
 import '../widget/components.dart';
 
 import 'add_clients.dart';
-
 
 import 'loginscreen.dart';
 
@@ -108,7 +106,7 @@ class ClientsScreen extends StatelessWidget {
                                             height: Get.height * 0.12,
                                             child: Card(
                                                 elevation: 5,
-                                                color: Colors.deepPurple,
+                                                color: Colors.white,
                                                 child: ListTile(
                                                   // leading: PopupMenuButton(
                                                   //     icon: const Icon(Icons.more_vert,
@@ -269,7 +267,7 @@ class ClientsScreen extends StatelessWidget {
                                                     snapshot.data?.docs[index]
                                                         ['name'],
                                                     style: const TextStyle(
-                                                        color: Colors.white,
+                                                        color: Colors.black,
                                                         fontWeight:
                                                             FontWeight.bold),
                                                   ),
@@ -279,7 +277,7 @@ class ClientsScreen extends StatelessWidget {
                                                         text:
                                                             "${snapshot.data?.docs[index]['company']} -",
                                                         style: const TextStyle(
-                                                            color: Colors.white,
+                                                            color: Colors.black,
                                                             fontSize: 15,
                                                             fontWeight:
                                                                 FontWeight
@@ -298,7 +296,7 @@ class ClientsScreen extends StatelessWidget {
                                                                 ?.docs[index]
                                                             ['phone'],
                                                         style: const TextStyle(
-                                                            color: Colors.white,
+                                                            color: Colors.black,
                                                             fontWeight:
                                                                 FontWeight
                                                                     .bold)),
@@ -322,29 +320,36 @@ class ClientsScreen extends StatelessWidget {
                                                   ),
                                                   leading: IconButton(
                                                       onPressed: () {
-                                                        Get.to(() => EditClients(
-                                                            id: snapshot.data!
-                                                                .docs[index].id,
-                                                            name: snapshot.data!
-                                                                    .docs[index]
-                                                                ['name'],
-                                                            company: snapshot
-                                                                    .data!
-                                                                    .docs[index]
-                                                                ['company'],
-                                                            phone: snapshot
-                                                                    .data!
-                                                                    .docs[index]
-                                                                ['phone'],
-                                                            amount: snapshot
-                                                                    .data!
-                                                                    .docs[index]
-                                                                ['currentAmount'],
-                                                         ));
+                                                        Get.to(
+                                                            () => EditClients(
+                                                                  id: snapshot
+                                                                      .data!
+                                                                      .docs[
+                                                                          index]
+                                                                      .id,
+                                                                  name: snapshot
+                                                                          .data!
+                                                                          .docs[
+                                                                      index]['name'],
+                                                                  company: snapshot
+                                                                          .data!
+                                                                          .docs[index]
+                                                                      [
+                                                                      'company'],
+                                                                  phone: snapshot
+                                                                          .data!
+                                                                          .docs[index]
+                                                                      ['phone'],
+                                                                  amount: snapshot
+                                                                          .data!
+                                                                          .docs[index]
+                                                                      [
+                                                                      'currentAmount'],
+                                                                ));
                                                       },
                                                       icon: const Icon(
                                                         Icons.edit,
-                                                        color: Colors.white,
+                                                        color: Colors.green,
                                                       )),
                                                 )),
                                           ));
