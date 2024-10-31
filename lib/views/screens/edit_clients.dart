@@ -1,20 +1,22 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-
-
+import '../../controller/clients_controller.dart';
 import '../widget/components.dart';
-
+import 'add_invoice.dart';
+import 'client_transaction.dart';
+import 'clients_screen.dart';
 
 class EditClients extends StatefulWidget {
   final String id;
   final String name;
   final String phone;
   final String company;
-  final String goverment;
+ 
   final double amount;
 
   const EditClients(
@@ -23,7 +25,7 @@ class EditClients extends StatefulWidget {
       required this.name,
       required this.phone,
       required this.company,
-      required this.goverment,
+    
       required this.amount});
 
   @override
@@ -34,7 +36,7 @@ class _EditClientsState extends State<EditClients> {
   TextEditingController name = TextEditingController();
   TextEditingController phone = TextEditingController();
   TextEditingController company = TextEditingController();
-  TextEditingController governorate = TextEditingController();
+  
   TextEditingController amount = TextEditingController();
 
   @override
@@ -42,7 +44,7 @@ class _EditClientsState extends State<EditClients> {
     name.text = widget.name;
     phone.text = widget.phone;
     company.text = widget.company;
-    governorate.text = widget.goverment;
+    //governorate.text = widget.goverment;
     amount.text = widget.amount.toString();
     super.initState();
   }
@@ -52,7 +54,7 @@ class _EditClientsState extends State<EditClients> {
     name.dispose();
     phone.dispose();
     company.dispose();
-    governorate.dispose();
+   // governorate.dispose();
     amount.dispose();
     super.dispose();
   }
@@ -68,9 +70,7 @@ class _EditClientsState extends State<EditClients> {
     if (company.text == "") {
       company.text = widget.company;
     }
-    if (governorate.text == "") {
-      governorate.text = widget.goverment;
-    }
+   
     if (amount.text == "") {
       amount.text = widget.amount.toString();
     }
@@ -89,9 +89,8 @@ class _EditClientsState extends State<EditClients> {
         "name": name.text,
         "phone": phone.text,
         "company": company.text,
-        "goverment": governorate.text,
+       // "goverment": governorate.text,
         "currentAmount": double.parse(amount.text),
-      
       });
       Get.snackbar("Success", "تم التعديل بنجاح",
           backgroundColor: Colors.deepPurple, colorText: Colors.white);
@@ -155,11 +154,11 @@ class _EditClientsState extends State<EditClients> {
                 const SizedBox(
                   height: 20,
                 ),
-                CustomForm(
-                  type: TextInputType.name,
-                  text: " ",
-                  name: governorate,
-                ),
+                // CustomForm(
+                //   type: TextInputType.name,
+                //   text: " ",
+                //   name: governorate,
+                // ),
                 const SizedBox(
                   height: 20,
                 ),
@@ -184,7 +183,70 @@ class _EditClientsState extends State<EditClients> {
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     )),
-               
+                const SizedBox(
+                  height: 20,
+                ),
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.black,
+                        foregroundColor: Colors.white),
+                    onPressed: () {
+                      Get.dialog(AddInvoice(
+                        name: name.text,
+                        id: widget.id,
+                      ));
+                    },
+                    child: const Text(
+                      "انشاء فاتوره للعميل",
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    )),
+                const SizedBox(
+                  height: 20,
+                ),
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.orange,
+                        foregroundColor: Colors.white),
+                    onPressed: () {
+                      Get.to(() => ClientTransactions(id: widget.id));
+                    },
+                    child: const Text(
+                      "عرض حركات العميل  ",
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    )),
+                const SizedBox(
+                  height: 20,
+                ),
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red,
+                        foregroundColor: Colors.white),
+                    onPressed: () {
+                      AwesomeDialog(
+                        context: context,
+                        dialogType: DialogType.warning,
+                        animType: AnimType.bottomSlide,
+                        title: 'تنبيه',
+                        desc: 'هل تريد حذف هذا العميل؟',
+                        btnCancelOnPress: () {
+                          Get.back();
+                        },
+                        btnOkOnPress: () {
+                          Get.put(AddClientsController())
+                              .deleteClients(widget.id);
+                          Get.to(() => const ClientsScreen());
+                        },
+                        buttonsTextStyle: const TextStyle(color: Colors.white),
+                        showCloseIcon: true,
+                      ).show();
+                    },
+                    child: const Text(
+                      "حذف بيانات العميل  ",
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    )),
               ])),
         ),
       ),

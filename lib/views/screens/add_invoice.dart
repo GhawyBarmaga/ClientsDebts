@@ -3,8 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-
 import '../widget/components.dart';
+import 'clients_screen.dart';
 
 class AddInvoice extends StatefulWidget {
   final String id;
@@ -52,7 +52,6 @@ class _AddInvoiceState extends State<AddInvoice> {
         "cureAmount": double.parse(cureAmount.text),
         "date": formattedDate,
         "uid": FirebaseAuth.instance.currentUser?.uid,
-       
       });
       batch.update(updateclient, {
         "currentAmount": FieldValue.increment(-double.parse(cureAmount.text))
@@ -64,7 +63,6 @@ class _AddInvoiceState extends State<AddInvoice> {
         "cureAmount": double.parse(cureAmount.text),
         "date": formattedDate,
         "uid": FirebaseAuth.instance.currentUser?.uid,
-       
       });
       batch.update(updateclient, {
         "currentAmount": FieldValue.increment(double.parse(cureAmount.text))
@@ -75,6 +73,7 @@ class _AddInvoiceState extends State<AddInvoice> {
           duration: const Duration(seconds: 1),
           backgroundColor: Colors.green,
           colorText: Colors.white);
+      Get.to(() => const ClientsScreen());
     }).catchError((error) {
       Get.snackbar("Error", error.toString());
     });

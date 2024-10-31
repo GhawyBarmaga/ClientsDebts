@@ -86,16 +86,16 @@ class _AddClientsState extends State<AddClients> {
                         name: controller.phone,
                       ),
                       const SizedBox(height: 10.0),
-                      CustomForm(
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return " الشركة التابع لها العميل";
-                            }
-                            return null;
-                          },
-                          text: "الشركة التابع لها العميل",
-                          type: TextInputType.name,
-                          name: controller.goverment),
+                      // CustomForm(
+                      //     validator: (value) {
+                      //       if (value!.isEmpty) {
+                      //         return " الشركة التابع لها العميل";
+                      //       }
+                      //       return null;
+                      //     },
+                      //     text: "الشركة التابع لها العميل",
+                      //     type: TextInputType.name,
+                      //     name: controller.goverment),
                       const SizedBox(height: 10.0),
                       CustomForm(
                           validator: (value) {

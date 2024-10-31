@@ -16,7 +16,7 @@ class ClientTransactions extends StatefulWidget {
 class _ClientTransactionsState extends State<ClientTransactions> {
   DateTime? firstDate;
   DateTime? secDate;
-  
+
 //=================================================================
   @override
   void initState() {
@@ -41,9 +41,9 @@ class _ClientTransactionsState extends State<ClientTransactions> {
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
                 gradient: LinearGradient(colors: [
-                  HexColor("00B2E7"),
-                  HexColor("E064F7"),
-                  HexColor("FF8D6C")
+                  HexColor("020024"),
+                  HexColor("090979"),
+                  HexColor("00d4ff")
                 ])),
             child: Column(
               children: [

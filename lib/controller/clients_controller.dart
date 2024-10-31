@@ -15,7 +15,7 @@ class AddClientsController extends GetxController {
   final currentuser = FirebaseAuth.instance.currentUser?.uid;
   TextEditingController name = TextEditingController();
   TextEditingController phone = TextEditingController();
-  TextEditingController goverment = TextEditingController();
+  //TextEditingController goverment = TextEditingController();
   TextEditingController addcompany = TextEditingController();
   TextEditingController amount = TextEditingController();
   TextEditingController searchname = TextEditingController();
@@ -42,7 +42,7 @@ class AddClientsController extends GetxController {
   void dispose() {
     name.dispose();
     phone.dispose();
-    goverment.dispose();
+    //goverment.dispose();
     addcompany.dispose();
     amount.dispose();
     searchname.dispose();
@@ -110,7 +110,7 @@ class AddClientsController extends GetxController {
           .add({
         "name": name.text,
         "phone": phone.text,
-        "goverment": goverment.text,
+       
         "currentAmount": double.parse(amount.text),
         "company": selectedValue,
         "clientid": userid,
@@ -133,7 +133,7 @@ class AddClientsController extends GetxController {
   void clearController() {
     name.clear();
     phone.clear();
-    goverment.clear();
+    //goverment.clear();
     addcompany.clear();
     amount.clear();
     update();
