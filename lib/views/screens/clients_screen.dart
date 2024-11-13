@@ -23,11 +23,19 @@ class ClientsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(
-            "قائمة العملاء ",
-            style: TextStyle(
-                color: HexColor("444444"), fontWeight: FontWeight.bold),
-          ),
+          title: StreamBuilder<QuerySnapshot>(
+              stream: FirebaseFirestore.instance
+                  .collection("users")
+                  .doc(FirebaseAuth.instance.currentUser?.uid)
+                  .collection("clients")
+                  .snapshots(),
+              builder: (context, snapshot) {
+                return Text(
+                  "${snapshot.data!.docs.length} :عدد العملاء ",
+                  style: TextStyle(
+                      color: HexColor("444444"), fontWeight: FontWeight.bold),
+                );
+              }),
           centerTitle: true,
           leading: IconButton(
             onPressed: () async {
@@ -106,166 +114,11 @@ class ClientsScreen extends StatelessWidget {
                                         itemBuilder: (context, index) =>
                                             SizedBox(
                                               width: Get.width * 0.9,
-                                              height: Get.height * 0.12,
+                                              height: Get.height * 0.14,
                                               child: Card(
                                                   elevation: 5,
                                                   color: Colors.white,
                                                   child: ListTile(
-                                                    // leading: PopupMenuButton(
-                                                    //     icon: const Icon(Icons.more_vert,
-                                                    //         color: Colors.white),
-                                                    //     itemBuilder: (context) => [
-                                                    //           const PopupMenuItem(
-                                                    //             value: 1,
-                                                    //             child: Row(
-                                                    //               mainAxisAlignment:
-                                                    //                   MainAxisAlignment
-                                                    //                       .spaceBetween,
-                                                    //               children: [
-                                                    //                 Text(
-                                                    //                   "تعديل",
-                                                    //                   style: TextStyle(
-                                                    //                       color: Colors
-                                                    //                           .black,
-                                                    //                       fontWeight:
-                                                    //                           FontWeight
-                                                    //                               .bold),
-                                                    //                 ),
-                                                    //                 Icon(
-                                                    //                   Icons.edit,
-                                                    //                   color: Colors
-                                                    //                       .deepPurple,
-                                                    //                 )
-                                                    //               ],
-                                                    //             ),
-                                                    //           ),
-                                                    //           const PopupMenuItem(
-                                                    //             value: 2,
-                                                    //             child: Row(
-                                                    //               mainAxisAlignment:
-                                                    //                   MainAxisAlignment
-                                                    //                       .spaceBetween,
-                                                    //               children: [
-                                                    //                 Text("حذف",
-                                                    //                     style: TextStyle(
-                                                    //                         color: Colors
-                                                    //                             .black,
-                                                    //                         fontWeight:
-                                                    //                             FontWeight
-                                                    //                                 .bold)),
-                                                    //                 Icon(
-                                                    //                   Icons
-                                                    //                       .delete_outline,
-                                                    //                   color: Colors.red,
-                                                    //                 )
-                                                    //               ],
-                                                    //             ),
-                                                    //           ),
-                                                    //           const PopupMenuItem(
-                                                    //             value: 3,
-                                                    //             child: Row(
-                                                    //               mainAxisAlignment:
-                                                    //                   MainAxisAlignment
-                                                    //                       .spaceBetween,
-                                                    //               children: [
-                                                    //                 Text(
-                                                    //                     "اضافة فاتورة بيع او  فاتورة شراء",
-                                                    //                     style: TextStyle(
-                                                    //                         color: Colors
-                                                    //                             .black,
-                                                    //                         fontWeight:
-                                                    //                             FontWeight
-                                                    //                                 .bold)),
-                                                    //                 Icon(
-                                                    //                   Icons.add,
-                                                    //                   color: Colors.green,
-                                                    //                 )
-                                                    //               ],
-                                                    //             ),
-                                                    //           ),
-                                                    //           const PopupMenuItem(
-                                                    //             value: 4,
-                                                    //             child: Row(
-                                                    //               mainAxisAlignment:
-                                                    //                   MainAxisAlignment
-                                                    //                       .spaceBetween,
-                                                    //               children: [
-                                                    //                 Text(
-                                                    //                     "عرض حركات العميل",
-                                                    //                     style: TextStyle(
-                                                    //                         color: Colors
-                                                    //                             .black,
-                                                    //                         fontWeight:
-                                                    //                             FontWeight
-                                                    //                                 .bold)),
-                                                    //                 Icon(
-                                                    //                   Icons
-                                                    //                       .list_alt_outlined,
-                                                    //                   color:
-                                                    //                       Colors.orange,
-                                                    //                 )
-                                                    //               ],
-                                                    //             ),
-                                                    //           ),
-                                                    //         ],
-                                                    //     onSelected: (value) {
-                                                    //       if (value == 1) {
-                                                    //         Get.to(() => EditClients(
-                                                    //             id: snapshot
-                                                    //                 .data!.docs[index].id,
-                                                    //             name: snapshot.data!
-                                                    //                 .docs[index]['name'],
-                                                    //             company: snapshot
-                                                    //                     .data!.docs[index]
-                                                    //                 ['company'],
-                                                    //             phone: snapshot.data!
-                                                    //                 .docs[index]['phone'],
-                                                    //             amount: snapshot.data!.docs[index]
-                                                    //                 ['currentAmount'],
-                                                    //             goverment: snapshot
-                                                    //                     .data!.docs[index]
-                                                    //                 ['goverment']));
-                                                    //       } else if (value == 2) {
-                                                    //         AwesomeDialog(
-                                                    //           context: context,
-                                                    //           dialogType:
-                                                    //               DialogType.warning,
-                                                    //           animType:
-                                                    //               AnimType.bottomSlide,
-                                                    //           title: 'تنبيه',
-                                                    //           desc:
-                                                    //               'هل تريد حذف هذا العميل؟',
-                                                    //           btnCancelOnPress: () {
-                                                    //             Get.back();
-                                                    //           },
-                                                    //           btnOkOnPress: () {
-                                                    //             controller.deleteClients(
-                                                    //                 snapshot.data!
-                                                    //                     .docs[index].id);
-
-                                                    //           },
-                                                    //           buttonsTextStyle:
-                                                    //               const TextStyle(
-                                                    //                   color:
-                                                    //                       Colors.white),
-                                                    //           showCloseIcon: true,
-                                                    //         ).show();
-                                                    //       } else if (value == 3) {
-                                                    //         Get.dialog(AddInvoice(
-                                                    //             id: snapshot
-                                                    //                 .data!.docs[index].id,
-                                                    //             name: snapshot
-                                                    //                     .data!.docs[index]
-                                                    //                 ['name']));
-                                                    //       }
-
-                                                    //       if (value == 4) {
-                                                    //         Get.to(() =>
-                                                    //             ClientTransactions(
-                                                    //                 id: snapshot.data!
-                                                    //                     .docs[index].id));
-                                                    //       }
-                                                    //     }),
                                                     title: Text(
                                                       snapshot.data?.docs[index]
                                                           ['name'],
@@ -369,6 +222,7 @@ class ClientsScreen extends StatelessWidget {
                                     );
                                   }
                                 })),
+                        SizedBox(height: 20),
                         ElevatedButton(
                             style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.red,

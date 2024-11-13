@@ -5,6 +5,8 @@ import 'package:flutter/services.dart';
 
 import 'package:hexcolor/hexcolor.dart';
 
+import '../../Model/excel_export.dart';
+
 class ClientTransactions extends StatefulWidget {
   final String id;
   const ClientTransactions({super.key, required this.id});
@@ -17,7 +19,36 @@ class _ClientTransactionsState extends State<ClientTransactions> {
   DateTime? firstDate;
   DateTime? secDate;
 
+  Future pickFirstDate() async {
+    final initialDate = DateTime.now();
+    final newDate = await showDatePicker(
+      context: context,
+      initialDate: firstDate ?? initialDate,
+      firstDate: DateTime(DateTime.now().year - 20),
+      lastDate: DateTime.now(),
+    );
+    if (newDate == null) {
+      return;
+    }
+    setState(() => firstDate = newDate);
+  }
+
 //=================================================================
+//===========================================second date calender==========================
+  Future pickSecDate() async {
+    final initialDate = DateTime.now();
+    final newDate = await showDatePicker(
+      context: context,
+      initialDate: secDate ?? initialDate,
+      firstDate: DateTime(DateTime.now().year - 10),
+      lastDate: DateTime.now(),
+    );
+    if (newDate == null) {
+      return;
+    }
+    setState(() => secDate = newDate);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -57,61 +88,61 @@ class _ClientTransactionsState extends State<ClientTransactions> {
                 const SizedBox(
                   height: 20,
                 ),
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Column(
                       children: [
-                        // Row(
-                        //   children: [
-                        //     IconButton(
-                        //       onPressed: pickFirstDate,
-                        //       icon: const Icon(
-                        //         Icons.calendar_today,
-                        //         size: 30,
-                        //         color: Colors.white,
-                        //       ),
-                        //     ),
-                        //     const Text(
-                        //       " من تاريخ ",
-                        //       style: TextStyle(
-                        //           color: Colors.white,
-                        //           fontWeight: FontWeight.bold),
-                        //     )
-                        //   ],
-                        // ),
-                        // Text(
-                        //   firstDate == null
-                        //       ? ""
-                        //       : "${firstDate?.day}/${firstDate?.month}/${firstDate?.year}",
-                        //   style: const TextStyle(color: Colors.white),
-                        // ),
+                        Row(
+                          children: [
+                            IconButton(
+                              onPressed: pickFirstDate,
+                              icon: const Icon(
+                                Icons.calendar_today,
+                                size: 30,
+                                color: Colors.white,
+                              ),
+                            ),
+                            const Text(
+                              " من تاريخ ",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            )
+                          ],
+                        ),
+                        Text(
+                          firstDate == null
+                              ? ""
+                              : "${firstDate?.day}/${firstDate?.month}/${firstDate?.year}",
+                          style: const TextStyle(color: Colors.white),
+                        ),
                       ],
                     ),
                     Column(
                       children: [
-                        // Row(
-                        //   children: [
-                        //     const Text("الى تاريخ ",
-                        //         style: TextStyle(
-                        //           color: Colors.white,
-                        //           fontWeight: FontWeight.bold,
-                        //         )),
-                        //     IconButton(
-                        //       onPressed: pickSecDate,
-                        //       icon: const Icon(
-                        //         Icons.calendar_today,
-                        //         size: 30,
-                        //         color: Colors.white,
-                        //       ),
-                        //     ),
-                        //   ],
-                        // ),
-                        // Text(
-                        //     secDate == null
-                        //         ? " "
-                        //         : "${secDate?.day}/${secDate?.month}/${secDate?.year}",
-                        //     style: const TextStyle(color: Colors.white)),
+                        Row(
+                          children: [
+                            const Text("الى تاريخ ",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                )),
+                            IconButton(
+                              onPressed: pickSecDate,
+                              icon: const Icon(
+                                Icons.calendar_today,
+                                size: 30,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Text(
+                            secDate == null
+                                ? " "
+                                : "${secDate?.day}/${secDate?.month}/${secDate?.year}",
+                            style: const TextStyle(color: Colors.white)),
                       ],
                     ),
                   ],
@@ -212,15 +243,15 @@ class _ClientTransactionsState extends State<ClientTransactions> {
                         }
                       }),
                 ),
-                // ElevatedButton(
-                //     style:
-                //         ElevatedButton.styleFrom(backgroundColor: Colors.black),
-                //     onPressed: () => ExcelServices.exportDataToExcel(),
-                //     child: const Text("تصدير حركات العملاء الى ملف اكسل",
-                //         style: TextStyle(
-                //             color: Colors.white,
-                //             fontWeight: FontWeight.bold,
-                //             fontSize: 14)))
+                ElevatedButton(
+                    style:
+                        ElevatedButton.styleFrom(backgroundColor: Colors.green),
+                    onPressed: () => ExcelServices.exportDataToExcel(),
+                    child: const Text("تصدير حركات العملاء الى ملف اكسل",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16)))
               ],
             )),
       )),

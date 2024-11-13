@@ -4,7 +4,6 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -22,14 +21,13 @@ class AddClientsController extends GetxController {
   TextEditingController searchcode = TextEditingController();
   final formKey = GlobalKey<FormState>();
   List<QueryDocumentSnapshot> data = [];
- 
 
   //List<QueryDocumentSnapshot> clientslist = [];
   bool isLoading = true;
 
   @override
   void onInit() async {
-    
+    getCount();
     getclients();
     clearController();
     selectedValue = "";
@@ -110,12 +108,10 @@ class AddClientsController extends GetxController {
           .add({
         "name": name.text,
         "phone": phone.text,
-       
         "currentAmount": double.parse(amount.text),
         "company": selectedValue,
         "clientid": userid,
         "guid": randomnumbers,
-        
       });
       clearController();
       selectedValue = "";
@@ -173,5 +169,20 @@ class AddClientsController extends GetxController {
 
     update();
     return phoneNumbers;
+  }
+  //=====================get count of clients===============================
+
+  Future<int> getCount() async {
+    try {
+      QuerySnapshot q = await FirebaseFirestore.instance
+          .collection("users")
+          .doc(currentuser)
+          .collection("clients")
+          .get();
+      update();
+      return q.docs.length;
+    } catch (e) {
+      return 0;
+    }
   }
 }
